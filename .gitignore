@@ -129,5 +129,3 @@ dmypy.json
 .pyre/
 
 # local files
-api_key.txt
-description.txt
