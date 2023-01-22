@@ -43,12 +43,13 @@ if __name__ == '__main__':
         print("Please select a model:")
         for i, model_name in enumerate(valid_models):
             print(f"{i+1}. {model_name}")
-        print("4. Enter custom model name")
+        custom_model_num = len(valid_models) + 1
+        print(f"{custom_model_num}. Enter custom model name")
         choice = input("Enter the number of your choice: ")
-        if choice == "4":
+        if choice == str(custom_model_num):
             model = input("Enter a custom model name: ")
             break
-        elif int(choice) in range(1,4):
+        elif int(choice) in range(1, custom_model_num):
             model = valid_models[int(choice)-1]
             break
         else:
