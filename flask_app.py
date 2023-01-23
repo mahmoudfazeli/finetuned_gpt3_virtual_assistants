@@ -11,24 +11,26 @@ def index():
     return render_template('index.html')
 
 # Create a global variable to store the conversation
-conversation = ""
+start_sequence = "\nUser: "
+restart_sequence = "\nAI: "
+conversation = "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\n\n"
 
 @app.route('/send_prompt', methods=['POST'])
 def send_prompt():
     global conversation
     prompt = json.loads(request.data)['prompt']
     # Append the prompt to the conversation
-    conversation = conversation + prompt
+    conversation = conversation + start_sequence + prompt + restart_sequence
     response = openai.Completion.create(
         model=model,
         prompt=conversation,
-        temperature=0.7,
-        max_tokens=60,
-        top_p=0.3,
-        frequency_penalty=0.5,
+        temperature=0.9,
+        max_tokens=150,
+        top_p=1,
         presence_penalty=0,
+        frequency_penalty=0.6,
         n=1,
-        stop=None
+        stop=[" User:", " AI:"]
     )   
     # Update the conversation
     conversation = conversation + response["choices"][0]["text"]
