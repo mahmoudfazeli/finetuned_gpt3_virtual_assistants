@@ -2,6 +2,13 @@
 <html>
   <head>
     <title>GPT-3 Virtual Assistant</title>
+    <style>
+    .identity-class {
+        position: absolute;
+        bottom: 50px;
+        right: 0;
+    }
+    </style>
   </head>
   <body>
     <div id="conversation">
@@ -13,9 +20,10 @@
       <br>
       <input type="submit" value="Get Response">
     </form>
-
+    <div id="identity" class="identity-class">{{ identity }}</div>
     <script>
-      document.querySelector("#prompt-form").addEventListener("submit", function(event) {
+        var assistant_name = "{{ assistant_name }}";
+        document.querySelector("#prompt-form").addEventListener("submit", function(event) {
         event.preventDefault();
         var prompt = document.querySelector("#prompt").value;
         document.querySelector("#conversation").innerHTML += "<p>User: " + prompt + "</p>";
@@ -31,7 +39,7 @@
           return response.text();
         })
         .then(function(response) {
-          document.querySelector("#conversation").innerHTML += "<p>GPT-3: " + response + "</p>";
+          document.querySelector("#conversation").innerHTML += "<p>"+ assistant_name +": " + response + "</p>";
         });
       });
     </script>
