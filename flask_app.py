@@ -6,22 +6,22 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-# Create a global variable to store the previous response
-prev_response = ""
-
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# Create a global variable to store the conversation
+conversation = ""
+
 @app.route('/send_prompt', methods=['POST'])
 def send_prompt():
-    global prev_response
+    global conversation
     prompt = json.loads(request.data)['prompt']
-    # Append the previous response to the prompt
-    prompt = prev_response + prompt
+    # Append the prompt to the conversation
+    conversation = conversation + prompt
     response = openai.Completion.create(
         model=model,
-        prompt=prompt,
+        prompt=conversation,
         temperature=0.7,
         max_tokens=60,
         top_p=0.3,
@@ -30,9 +30,10 @@ def send_prompt():
         n=1,
         stop=None
     )   
-    # Update the previous response to be the current response
-    prev_response = response["choices"][0]["text"]
-    return prev_response
+    # Update the conversation
+    conversation = conversation + response["choices"][0]["text"]
+    print (conversation)
+    return response["choices"][0]["text"]
 
 if __name__ == '__main__':
     # Define a list of valid model names
