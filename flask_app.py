@@ -17,14 +17,17 @@ def load_config():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html',
+                            assistant_name=config.assistant_name,
+                            identity=config.identity
+                            )
 
 @app.route('/send_prompt', methods=['POST'])
 def send_prompt():
     assistant_name = config.assistant_name
     identity = config.identity
     start_sequence = "\nUser-> "
-    restart_sequence = "n"+assistant_name+"-> "
+    restart_sequence = "\n"+assistant_name+"-> "
     conversation = identity + "\n\n"
     prompt = json.loads(request.data)['prompt']
     # Append the prompt to the conversation
@@ -50,7 +53,7 @@ if __name__ == '__main__':
     config=load_config()
 
     # Define a list of valid model names
-    valid_models = ["text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001"]
+    valid_models = ["text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001", "davinci:ft-personal-2023-01-11-15-48-39"]
 
     # Prompt the user for a model name
     while True:
