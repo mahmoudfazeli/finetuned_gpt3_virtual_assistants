@@ -1,4 +1,5 @@
 import os
+import configargparse
 import json
 import openai
 from flask import Flask, render_template, request
@@ -6,18 +7,25 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
+def load_config():
+    parser = configargparse.ArgParser(default_config_files=['assistant_config.ini'])
+    parser.add('-c', '--config', is_config_file=True, help='config file path')
+    parser.add('--assistant_name', default=None, help='Name of the assistant')
+    parser.add('--identity', default=None, help='Identity of the assistant')
+    return parser.parse_args()
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Create a global variable to store the conversation
-start_sequence = "\nUser: "
-restart_sequence = "\nAI: "
-conversation = "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\n\n"
-
 @app.route('/send_prompt', methods=['POST'])
 def send_prompt():
-    global conversation
+    assistant_name = config.assistant_name
+    identity = config.identity
+    start_sequence = "\nUser-> "
+    restart_sequence = "n"+assistant_name+"-> "
+    conversation = identity + "\n\n"
     prompt = json.loads(request.data)['prompt']
     # Append the prompt to the conversation
     conversation = conversation + start_sequence + prompt + restart_sequence
@@ -30,7 +38,8 @@ def send_prompt():
         presence_penalty=0,
         frequency_penalty=0.6,
         n=1,
-        stop=[" User:", " AI:"]
+        #stop=[" User:", " AI:"]
+        stop=[" User->", " "+assistant_name+"->"]
     )   
     # Update the conversation
     conversation = conversation + response["choices"][0]["text"]
@@ -38,6 +47,8 @@ def send_prompt():
     return response["choices"][0]["text"]
 
 if __name__ == '__main__':
+    config=load_config()
+
     # Define a list of valid model names
     valid_models = ["text-davinci-003", "text-curie-001", "text-babbage-001", "text-ada-001"]
 
