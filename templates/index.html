@@ -3,7 +3,7 @@
   <head>
     <title>GPT-3 Virtual Assistant</title>
     <style>
-    .identity-class {
+    .description-class {
         position: absolute;
         bottom: 50px;
         right: 0;
@@ -20,7 +20,7 @@
       <br>
       <input type="submit" value="Get Response">
     </form>
-    <div id="identity" class="identity-class">{{ identity }}</div>
+    <div id="description" class="description-class">{{ description }}</div>
     <script>
         var assistant_name = "{{ assistant_name }}";
         document.querySelector("#prompt-form").addEventListener("submit", function(event) {

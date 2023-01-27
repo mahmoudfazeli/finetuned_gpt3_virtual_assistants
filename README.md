@@ -90,20 +90,15 @@ openai api fine_tunes.create -t <TRAIN_FILE_ID_OR_PATH> -m <BASE_MODEL>
 
 ```bash
 [ASSISTANT]
+model_name = davinci:ft-personal-2023-01-11-15-48-39
 assistant_name = Dr. Bot
-identity = Dr. Bot is a friendly and helpful virtual mental health assistant Bot who can always offer support and guidance. Dr. Bot is non-judgmental and patient, providing comfort and understanding to anyone who seeks his help. Dr. Bot is knowledgeable and understanding, and strives to provide the best advice and support possible.
+description = Dr. Bot is a friendly and helpful virtual mental health assistant Bot who can always offer support and guidance. Dr. Bot is non-judgmental and patient, providing comfort and understanding to anyone who seeks his help. Dr. Bot is knowledgeable and understanding, and strives to provide the best advice and support possible.
 ```
 
-8. Run the following script and select a GPT-3 model from the list provided or enter your fine-tunded model name:
+8. Run the following script to start the Flask web server:
 
 ```bash
 python flask_app.py -c assistant_config.ini
-```
-
-9. Start the Flask web server:
-
-```bash
-python flask_app.py
 ```
 
 10. Open a web browser and go to http://localhost:5000 to access the chatbot interface.
