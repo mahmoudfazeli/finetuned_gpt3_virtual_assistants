@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Define the command to run when the container starts
-CMD ["python", "flask_app.py", "-c", "assistant_config.ini"]
+CMD ["python", "fastapi_app.py", "-c", "assistant_config.ini"]
