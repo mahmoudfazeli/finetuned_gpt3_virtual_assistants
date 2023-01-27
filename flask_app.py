@@ -55,4 +55,4 @@ def send_prompt():
 
 if __name__ == '__main__':
     config=load_config()
-    app.run(debug=True)
+    app.run()
